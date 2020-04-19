@@ -34,25 +34,28 @@ int main(int argc, char *argv[])
     }
 
     // Read Okamura's model
-    std::string model_filename = "./share/okamura_model.csv";
+    std::string model_filename = "./share/okamura_insertion.csv";
     arma::fmat data; data.load(model_filename, arma::csv_ascii);
     ArmaExt::sortrows<arma::fmat>(&data, true);
-    arma::fvec depth_okamura = data.col(0) / 1000.0f;
-    arma::fvec force_okamura = data.col(1);
+
 
 
     // Resample model
     Identification arx;
-    arx.resampling(&data, 0.1);
+    arx.resampling(&data, 0.05);
+
+
+    arma::fvec depth_okamura = data.col(0) / 1000.0f;
+    arma::fvec force_okamura = data.col(1);
+
 
    // Plots
     MatPlot<arma::fvec> fig1;
-    fig1.plot2D(depth, axial_force, "b");
+    // fig1.plot2D(depth, axial_force, "b");
     fig1.plot2D(depth_okamura, force_okamura, "r.");
     fig1.grid();
     fig1.show();
 
     return 0;
 }
-
 
